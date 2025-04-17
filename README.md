@@ -6,7 +6,7 @@
 
 ## Architecture Overview
 
-![Architecture](docs/images/Ticketing.png)
+![Architecture](docs/images/Ticketing_v2.png)
 
 ---
 
