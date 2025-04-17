@@ -8,14 +8,8 @@ const port = process.env.PORT;
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-  console.log('첫 번째 미들웨어');
-  next();
-});
-
-app.use((req: Request, res: Response, next: NextFunction) => {
-  console.log('현재 시간:', new Date().toISOString());
-  next(); 
+app.get('/ticket', (req:Request, res:Response, next:NextFunction) => {
+  res.sendFile(path.join(__dirname, 'public', 'ticket.html'));
 });
 
 app.listen(port, () => {
