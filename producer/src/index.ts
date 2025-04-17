@@ -4,6 +4,7 @@ import path from 'path';
 import ticketRouter from './routes/ticket';
 
 dotenv.config();
+
 const app: Express = express();
 const port = process.env.PORT;
 
