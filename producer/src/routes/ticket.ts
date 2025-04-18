@@ -20,18 +20,18 @@ const setCookie = (res:Response, userUuid: string) => {
 router.get('/', async (req:Request, res:Response, next:NextFunction) => {
     
     try {
-
-        const userUuid = uuidv4();
     
-        await redisClient.rPush(QUEUE_KEY , userUuid);
-    
-        const listLength = await redisClient.lLen(QUEUE_KEY );
+        const listLength = await redisClient.lLen(QUEUE_KEY);
         if (listLength > MAX_REQUEST_LIMIT) {
+            const userUuid = uuidv4();
+            await redisClient.rPush(QUEUE_KEY , userUuid);
+
             setCookie(res, userUuid);
             return res.redirect(`/ticket/waiting`);
         }
     
-        await redisClient.lRem(QUEUE_KEY , 1, userUuid);
+        // 제거 로직은 /ticket/waiting에서 진행
+        // await redisClient.lRem(QUEUE_KEY , 1, userUuid);
         res.sendFile(path.join(__dirname, '..', 'public', 'ticket.html'));
     
     } catch (err) {
