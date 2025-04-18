@@ -19,7 +19,7 @@
 | **Consumer (예약 처리)** | Node.js or Spring Boot or Actix |
 | **데이터베이스** | MySQL |
 | **캐시 및 트래픽 제어** | Redis |
-| **통신 방식** | gRPC |
+| **통신 방식** | protobuf |
 
 ---
 
@@ -48,7 +48,7 @@
 
 - **Redis를 활용한 Rate Limiting**
 -  **Kafka로 비동기 트래픽 분산**
--  **gRPC로 고속 통신**
+-  **protobuf 통신**
 -  **Docker 기반 서비스 단위 분리**
 
 ---
