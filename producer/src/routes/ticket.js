@@ -8,21 +8,25 @@ const path_1 = __importDefault(require("path"));
 const redis_1 = __importDefault(require("../config/redis"));
 const uuid_1 = require("uuid");
 const router = (0, express_1.Router)();
-const maxRequestLimit = 5;
-const queueKey = 'ticketQueue';
+const MAX_REQUEST_LIMIT = 5;
+const QUEUE_KEY = 'ticketQueue';
+const ONE_HOUR = 1000 * 60 * 60;
+const setCookie = (res, userUuid) => {
+    res.cookie('userUuid', userUuid, {
+        httpOnly: true,
+        maxAge: ONE_HOUR,
+    });
+};
 router.get('/', async (req, res, next) => {
     try {
         const userUuid = (0, uuid_1.v4)();
-        console.log(`this uuid ${userUuid}`);
-        await redis_1.default.rPush(queueKey, userUuid);
-        res.cookie('userUuid', userUuid, {
-            httpOnly: true,
-            maxAge: 1000 * 60 * 60,
-        });
-        const listLength = await redis_1.default.lLen(queueKey);
-        if (listLength > maxRequestLimit) {
+        await redis_1.default.rPush(QUEUE_KEY, userUuid);
+        const listLength = await redis_1.default.lLen(QUEUE_KEY);
+        if (listLength > MAX_REQUEST_LIMIT) {
+            setCookie(res, userUuid);
             return res.redirect(`/ticket/waiting`);
         }
+        await redis_1.default.lRem(QUEUE_KEY, 1, userUuid);
         res.sendFile(path_1.default.join(__dirname, '..', 'public', 'ticket.html'));
     }
     catch (err) {
