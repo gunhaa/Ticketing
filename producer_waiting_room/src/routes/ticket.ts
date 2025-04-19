@@ -3,7 +3,7 @@ import path from 'path';
 import redisClient from '../config/redis'
 import { v4 as uuidv4 } from 'uuid';
 import cookieParser from 'cookie-parser';
-import { MAX_REQUEST_LIMIT, MAX_REQUEST_LIMIT_TEST, QUEUE_KEY, ONE_HOUR, RPUSH_KEY_AND_GET_QUEUE_LEN } from '../constants/constants';
+import { MAX_REQUEST_LIMIT, MAX_REQUEST_LIMIT_TEST, QUEUE_KEY, ONE_HOUR, RPUSH_KEY_AND_GET_QUEUE_LEN, ONE_MINUTE } from '../constants/constants';
 
 
 const router = Router();
@@ -16,15 +16,13 @@ const setCookie = (res:Response, userUuid: string, queueLength:number) => {
     });
 
     res.cookie('queueLength', queueLength, {
-        httpOnly: true,
-        maxAge: ONE_HOUR,
+        maxAge: ONE_MINUTE,
     });
 }
 
 router.get('/', async (req:Request, res:Response, next:NextFunction) => {
     
     try {
-    
         const queueLength = await redisClient.lLen(QUEUE_KEY);
         if (queueLength > MAX_REQUEST_LIMIT_TEST) {
 
