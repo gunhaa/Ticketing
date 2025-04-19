@@ -16,9 +16,22 @@
             }
 
             const queueLength = getCookie('queueLength');
+            const userUuid = getCookie('userUuid');
             if(queueLength!=null){
                 body.insertAdjacentHTML("beforebegin", `${queueLength}번째 대기자 입니다...`);
             }
+
+            setInterval(()=> {
+                fetch(`/ticketing/waiting/api/v1?userUuid=${userUuid}`)
+                .then(res => res.json())
+                .then(data => {
+                    const queueLength = data.queueLength;
+                    body.innerHTML(`${queueLength}번째 대기자 입니다...`);
+                })
+                .catch(error => {
+                    console.error('err:', error);
+                });
+            }, 5000);
         }
     </script>
 </head>
