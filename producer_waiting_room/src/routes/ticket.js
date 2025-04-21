@@ -9,9 +9,10 @@ const redis_1 = __importDefault(require("../config/redis"));
 const uuid_1 = require("uuid");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const constants_1 = require("../constants/constants");
+// import {setUuidAndQueueLengthCookie} from '../util/cookie';
 const router = (0, express_1.Router)();
 router.use((0, cookie_parser_1.default)());
-const setCookie = (res, userUuid, queueLength) => {
+const setUuidAndQueueLengthCookie = (res, userUuid, queueLength) => {
     res.cookie('userUuid', userUuid, {
         httpOnly: true,
         maxAge: constants_1.ONE_HOUR,
@@ -33,7 +34,7 @@ router.get('/', async (req, res, next) => {
             //         arguments: [MAX_REQUEST_LIMIT_TEST.toString(), userUuid]
             //     }
             // ) as [boolean, number];
-            setCookie(res, userUuid, queueLength);
+            setUuidAndQueueLengthCookie(res, userUuid, queueLength);
             return res.redirect(`/ticket/waiting`);
         }
         res.sendFile(path_1.default.join(__dirname, '..', 'public', 'ticket.html'));

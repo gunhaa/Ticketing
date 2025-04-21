@@ -36,6 +36,7 @@ router.get('/waiting/api/v1', async (req:Request, res:Response, next:NextFunctio
     if(!userUuid){
         //너 무슨짓임 uuid 없으니 처음 페이지로 가셈 있는 쿠키있으면 다 놓고가셈
         res.clearCookie('queueLength');
+        res.clearCookie('userUuid');
         return res.redirect('/');
     }
 
