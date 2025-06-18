@@ -22,7 +22,7 @@
 ### FIELD
 
 - ticketNo: Long
-- seatNo: Int
+- seat: Seat
 - event: Event
 - user: User
 - payment: Payment
@@ -38,6 +38,14 @@
 - ticket: Ticket
 - user: User
 
+## Seat
+
+### FIELD
+
+- seatId: Long
+- seatNo: Int
+- seatStatus: seatStatus
+
 ## Base
 
 - createdAt: Date
@@ -49,3 +57,4 @@
 - User - Ticket	1:N (권장)	한 유저가 여러 티켓 예매 가능
 - Ticket - Payment	1:1	하나의 티켓당 하나의 결제
 - User - Payment	1:N	유저는 여러 번 결제 가능
+- Ticket - Seat 1:1 하나의 티켓은 하나의 좌석을 가짐
